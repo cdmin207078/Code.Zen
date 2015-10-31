@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code.Zen", "Code.Zen\Code.Zen.csproj", "{BB49D08C-1715-4876-AAF6-25380F68432C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code.Zen.Test", "Code.Zen.Test\Code.Zen.Test.csproj", "{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB49D08C-1715-4876-AAF6-25380F68432C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB49D08C-1715-4876-AAF6-25380F68432C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB49D08C-1715-4876-AAF6-25380F68432C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB49D08C-1715-4876-AAF6-25380F68432C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
