@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code.Zen", "Code.Zen\Code.Zen.csproj", "{BB49D08C-1715-4876-AAF6-25380F68432C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JIF.Common", "Code.Zen\JIF.Common.csproj", "{BB49D08C-1715-4876-AAF6-25380F68432C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code.Zen.Test", "Code.Zen.Test\Code.Zen.Test.csproj", "{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JIF.Common.Test", "Code.Zen.Test\JIF.Common.Test.csproj", "{5BB11110-42D4-4AB5-A555-E0C25B03DEBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

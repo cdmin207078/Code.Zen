@@ -1,25 +1,26 @@
+using JIF.Common.Test.Excel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using NPOI.HSSF.Util;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Threading.Tasks;
-using ISample.Test;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NPOI.HSSF.Util;
-using NPOI.SS.UserModel;
 using System.Linq;
-using FluentEmail;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Code.Zen.Test
+namespace JIF.Common.Excel.Test
 {
     [TestClass]
     public class NpoiExcelHelperTest
     {
-        public readonly string ResultFile = @"C:\Users\pc\Desktop\npoiTestOutput\";
+        public readonly string ResultFile = @"C:\Users\Administrator\Desktop\npoiTestOutput\";
 
         [TestMethod]
-        public void Test_writeCellValue()
+        public void 写入_10000x100()
         {
-            NpoiExcelHelper excel = new NpoiExcelHelper();
+            IExcelHelper excel = new NpoiExcelHelper();
             excel.CreateSheet("1-1");
 
             for (int i = 0; i < 10000; i++)
@@ -31,7 +32,7 @@ namespace Code.Zen.Test
                 }
             }
 
-            excel.Export(string.Format("{0}Test_writeCellValue.xls", ResultFile));
+            excel.Export(string.Format("{0}写入数据_10000x100.xls", ResultFile));
         }
 
         [TestMethod]
@@ -117,14 +118,6 @@ namespace Code.Zen.Test
             excel.Write(data);
 
             excel.Export(string.Format("{0}Test_writeListValueType.xls", ResultFile));
-        }
-
-        public class Product
-        {
-            public DateTime CreateTime { get; set; }
-            public int SysNo { get; set; }
-            public string ProductId { get; set; }
-            public decimal Price { get; set; }
         }
 
         [TestMethod]
@@ -238,130 +231,70 @@ namespace Code.Zen.Test
         [TestMethod]
         public void Test_MultiTheadWriteList()
         {
-            Parallel.For(0, 1000, (i) =>
+            //Parallel.For(0, 1000, (i) =>
+            //{
+            //    var data = new List<Product>();
+
+            //    for (int j = 0; j < 10000; j++)
+            //    {
+            //        data.Add(new Product
+            //        {
+            //            SysNo = j,
+            //            ProductId = "编号:" + j,
+            //            Price = Convert.ToDecimal(j) / 3,
+            //            CreateTime = DateTime.Now
+            //        });
+            //    }
+            //    try
+            //    {
+            //        NpoiExcelHelper excel = new NpoiExcelHelper();
+
+            //        excel.Write(data);
+
+            //        excel.Export(string.Format("{0}Test_writeCustomerTypeListObject" + i + "_.xls", ResultFile));
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //        //throw;
+            //    }
+            //});
+
+        }
+
+
+
+
+        #region IExcel & NExcel Test 
+
+        [TestMethod]
+        public void Test_GetExcelColHeadChar()
+        {
+            var a = Utils.ToNumberSystem26(0);
+            var b = Utils.ToNumberSystem26(10);
+            var c = Utils.ToNumberSystem26(30);
+            var d = Utils.ToNumberSystem26(1000);
+        }
+
+
+        [TestMethod]
+        public void Test_NExcel_ReadExcel()
+        {
+            var file = @"E:\WorkDocument\Document\2016-05-13 夏季活动\GCM Summer Sale_hotellist_Zeropartner.xlsx";
+            var data = ExcelHelper.Read(file, rowIndex: 1);
+
+            var a = data.Select(d => new
             {
-                var data = new List<Product>();
-
-                for (int j = 0; j < 10000; j++)
-                {
-                    data.Add(new Product
-                    {
-                        SysNo = j,
-                        ProductId = "编号:" + j,
-                        Price = Convert.ToDecimal(j) / 3,
-                        CreateTime = DateTime.Now
-                    });
-                }
-                try
-                {
-                    NpoiExcelHelper excel = new NpoiExcelHelper();
-
-                    excel.Write(data);
-
-                    excel.Export(string.Format("{0}Test_writeCustomerTypeListObject" + i + "_.xls", ResultFile));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    //throw;
-                }
+                hotelcode = d.C,
+                hot = string.IsNullOrWhiteSpace(d.H) ? 0 : d.H,
+                hotelbookingurl = d.Z
             });
 
+            var rs = JsonConvert.SerializeObject(a);
+
+            Console.WriteLine(rs);
         }
 
-        [TestMethod]
-        public void Test_ReadAndWriteExcelFile()
-        {
-            string fileName = string.Format("{0}BillTemplet.xls", ResultFile);
-            NpoiExcelHelper excel = new NpoiExcelHelper(fileName);
-
-            int tempDataStart = 21;
-            int tempSumStart = 26;
-            int OriginTotalRow = excel.Sheet(0).LastRowNum;
-
-            #region Fill Table Title
-            var st = excel.Sheet(0);
-
-            var r = new Random(1);
-            ICellStyle dataStyle = excel.Row(25).RowStyle;
-
-            for (int i = 0; i < 2; i++)
-            {
-
-                int fillStart = excel.Sheet(0).PhysicalNumberOfRows;
-
-                st.CopyRow(tempDataStart, fillStart);           //--title 1
-                st.CopyRow(tempDataStart + 1, fillStart + 1);   //--title 2
-                st.CopyRow(tempDataStart + 2, fillStart + 2);   //--标题栏
-
-                int datacount = r.Next(100);
-                //int datacount = 100;
-
-                for (int j = 0; j < datacount; j++)
-                {
-                    int FillrowIndex = fillStart + j + 3;
-
-
-                    st.CopyRow(tempDataStart + 3, FillrowIndex);   //--数据
-                    //excel.CreateRow(rowIndex: FillrowIndex);
-
-                    var row = excel.Row(FillrowIndex);
-
-                    excel.Write("108056_" + j, FillrowIndex, 0);
-                    excel.Write("那就对了，说明你开始上手了。", FillrowIndex, 1);
-                    excel.Write("个", FillrowIndex, 9);
-
-                }
-
-                st.CopyRow(tempDataStart + 4, fillStart + datacount + 3);   //--小计
-
-                st.CreateRow(fillStart + datacount + 4);
-                st.CreateRow(fillStart + datacount + 5);
-                //st.ShiftRows(fillStart, st.LastRowNum, 2, true, true);
-
-            }
-
-            #endregion
-
-
-            st.SetActiveCellRange(tempDataStart, OriginTotalRow, 0, 12);
-
-            //将汇总数据模板下移
-            st.ShiftRows(tempSumStart, OriginTotalRow, st.LastRowNum - tempSumStart - 1, true, true);
-
-            //将添加的数据区域 + 汇总区域 上移
-            st.ShiftRows(OriginTotalRow, st.LastRowNum, 0 - (OriginTotalRow - tempDataStart + 1), true, true);
-
-            excel.Export(string.Format("{0}BillTemplet_Res.xls", ResultFile));
-        }
-
-        [TestMethod]
-        public void Test_Read_Dynamic_List()
-        {
-            string fileName = string.Format("{0}EmailNotice.xlsx", ResultFile);
-            NpoiExcelHelper excel = new NpoiExcelHelper();
-
-            List<dynamic> data = excel.ReadAsDynamicList(fileName);
-
-
-            string toEmail = "cdmin207078@foxmail.com";
-            string fromEmail = "johno@test.com";
-            string subject = "Npoi Excel数据读取导入+FluentEmail发送邮件";
-
-            string template = string.Format("收件人:@Model.收件人,邮件标题:@Model.邮件标题,内容模板:@Model.内容模板,数据区域:@Model.数据区域");
-            //var template = string.Format("编号:@Model.编号,数量:@Model.数量,金额:@Model.金额");
-
-            foreach (var item in data)
-            {
-                var email = Email
-                .From(fromEmail)
-                .To(toEmail)
-                .Subject(subject)
-                .UsingTemplate(template, item)
-                .Send();
-
-                Console.WriteLine(email.Message.Body);
-            }
-        }
+        #endregion
     }
 }

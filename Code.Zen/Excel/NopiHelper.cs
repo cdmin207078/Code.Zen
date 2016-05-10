@@ -10,19 +10,14 @@
 //
 // ----------------------------------------------------------------
 using NPOI.HSSF.UserModel;
-using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Sample.Test;
-using System.Dynamic;
 
-namespace Code.Zen
+namespace JIF.Common.Excel
 {
     public class NpoiExcelHelper : IExcelHelper
     {
@@ -40,39 +35,23 @@ namespace Code.Zen
             CreateSheet("Sheet1");
         }
 
-        public NpoiExcelHelper(string fileFullName)
-        {
-            using (var fs = new FileStream(fileFullName, FileMode.Open, FileAccess.Read))
-            {
-                _workbook = WorkbookFactory.Create(fs);
-            }
-        }
-
         #endregion
 
         #region Private
 
-        public ISheet Sheet(int sheetIndex)
+        ISheet Sheet(int sheetIndex)
         {
             return _workbook.GetSheetAt(sheetIndex);
         }
 
-        public IRow Row(int rowIndex, int sheetIndex = 0)
+        IRow Row(int rowIndex, int sheetIndex = 0)
         {
             return Sheet(sheetIndex).GetRow(rowIndex);
         }
 
-        public ICell Cell(int rowIndex, int CellIndex, int sheetIndex = 0)
+        ICell Cell(int rowIndex, int CellIndex, int sheetIndex = 0)
         {
             return Row(sheetIndex: sheetIndex, rowIndex: rowIndex).GetCell(CellIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK);
-            //return Row(sheetIndex, rowIndex).CreateCell(cellIndex);
-
-            //默认情况，返回空或Blank
-            //row.GetCell(2, MissingCellPolicy.RETURN_NULL_AND_BLANK);
-            //当单元格为BlankRecord时，也返回类型为Blank的ICell实例；
-            //row.GetCell(2, MissingCellPolicy.RETURN_BLANK_AS_NULL);
-            //当单元格不存在时，返回类型为Blank的ICell实例；如果存在则返回当前类型
-            //row.GetCell(1, MissingCellPolicy.CREATE_NULL_AS_BLANK);
         }
 
         #endregion
@@ -201,17 +180,6 @@ namespace Code.Zen
             }
         }
 
-        public void Export(string filePath)
-        {
-            if (!string.IsNullOrWhiteSpace(filePath))
-            {
-                using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                {
-                    _workbook.Write(fs);
-                }
-            }
-            _workbook = null;
-        }
 
         public T Read<T>(string filePath, int sheetIndex, int rowIndex, int CellIndex)
         {
@@ -368,6 +336,20 @@ namespace Code.Zen
             }
 
             return result;
+        }
+
+
+
+        public void Export(string filePath)
+        {
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                {
+                    _workbook.Write(fs);
+                }
+            }
+            _workbook = null;
         }
     }
 }

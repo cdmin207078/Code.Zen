@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 
-namespace Code.Zen
+namespace JIF.Common.Excel
 {
     public interface IExcelHelper
     {
@@ -14,15 +14,15 @@ namespace Code.Zen
         void CreateSheet(string sheetName);
         void CreateRow(int sheetIndex, int rowIndex);
 
-        void Write(IList<dynamic> source, int sheetIndex, int rowIndex, int CellIndex);
+        void Write<T>(T value, int rowIndex, int CellIndex);
+        void Write<T>(T value, int sheetIndex, int rowIndex, int CellIndex);
         void Write<T>(T[] source, int sheetIndex, int rowIndex, int CellIndex);
         void Write<T>(T[,] source, int sheetIndex, int rowIndex, int CellIndex);
         void Write<T>(IList<T> source, int sheetIndex, int rowIndex, int CellIndex);
+        void Write(IList<dynamic> source, int sheetIndex, int rowIndex, int CellIndex);
 
-        void Write<T>(T value, int rowIndex, int CellIndex);
-        void Write<T>(T value, int sheetIndex, int rowIndex, int CellIndex);
 
-        void Export(string filePath);
+
 
         T Read<T>(string filePath, int sheetIndex, int rowIndex, int CellIndex);
         IList<T> ReadList<T>(string filePath, int sheetIndex, int rowIndex, int CellIndex, int endRowIndex, int endCellIndex);
@@ -31,5 +31,7 @@ namespace Code.Zen
 
         void SetStyle(ICellStyle style, int sheetIndex, int rowIndex);
         void SetStyle(ICellStyle style, int sheetIndex, int rowIndex, int CellIndex);
+
+        void Export(string filePath);
     }
 }
