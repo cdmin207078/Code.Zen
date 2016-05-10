@@ -18,24 +18,6 @@ namespace JIF.Common.Excel.Test
         public readonly string ResultFile = @"C:\Users\Administrator\Desktop\npoiTestOutput\";
 
         [TestMethod]
-        public void 写入_10000x100()
-        {
-            IExcelHelper excel = new NpoiExcelHelper();
-            excel.CreateSheet("1-1");
-
-            for (int i = 0; i < 10000; i++)
-            {
-                excel.CreateRow(0, i);
-                for (int j = 0; j < 100; j++)
-                {
-                    excel.Write(i * j, 0, i, j);
-                }
-            }
-
-            excel.Export(string.Format("{0}写入数据_10000x100.xls", ResultFile));
-        }
-
-        [TestMethod]
         public void Test_writeStringArray()
         {
             string[,] res = new string[,] {
@@ -72,6 +54,8 @@ namespace JIF.Common.Excel.Test
         [TestMethod]
         public void Test_writeDataTable()
         {
+            Assert.Fail("未进行测试");
+
             //DataTable dt = new DataTable();
             //dt.Columns.Add("string", typeof(string));
             //dt.Columns.Add("int", typeof(int));
@@ -112,10 +96,10 @@ namespace JIF.Common.Excel.Test
             //    new List<string> {"D","E","F"}
             //};
 
+
             NpoiExcelHelper excel = new NpoiExcelHelper();
 
-
-            excel.Write(data);
+            excel.Write(data, 0, 0, 0);
 
             excel.Export(string.Format("{0}Test_writeListValueType.xls", ResultFile));
         }
@@ -138,7 +122,7 @@ namespace JIF.Common.Excel.Test
 
             NpoiExcelHelper excel = new NpoiExcelHelper();
 
-            excel.Write(data);
+            excel.Write(data, 0, 0, 0);
 
             excel.Export(string.Format("{0}Test_writeCustomerTypeListObject.xls", ResultFile));
         }
@@ -162,7 +146,7 @@ namespace JIF.Common.Excel.Test
 
             NpoiExcelHelper excel = new NpoiExcelHelper();
 
-            excel.Write(data);
+            excel.Write(data, 0, 0, 0);
 
             excel.Export(string.Format("{0}Test_wirteDynamicList.xls", ResultFile));
 
@@ -193,7 +177,7 @@ namespace JIF.Common.Excel.Test
             }).ToList();
 
             NpoiExcelHelper excel = new NpoiExcelHelper();
-            excel.Write(data);
+            excel.Write(data, 0, 0, 0);
             excel.Export(string.Format("{0}Test_writeAnonymousList.xls", ResultFile));
 
         }
@@ -201,36 +185,41 @@ namespace JIF.Common.Excel.Test
         [TestMethod]
         public void Test_setStyle()
         {
-            List<dynamic> data = new List<dynamic>();
+            Assert.Fail("未进行测试");
 
-            for (int i = 0; i < 10000; i++)
-            {
-                dynamic o = new ExpandoObject();
 
-                o.A = "Hello World";
-                o.B = DateTime.Now.ToString("yyyy-MM-dd");
-                o.C = 1.1m;
-                o.D = 2.2d;
+            //List<dynamic> data = new List<dynamic>();
 
-                data.Add(o);
-            }
+            //for (int i = 0; i < 10000; i++)
+            //{
+            //    dynamic o = new ExpandoObject();
 
-            NpoiExcelHelper excel = new NpoiExcelHelper();
+            //    o.A = "Hello World";
+            //    o.B = DateTime.Now.ToString("yyyy-MM-dd");
+            //    o.C = 1.1m;
+            //    o.D = 2.2d;
 
-            excel.Write(data);
+            //    data.Add(o);
+            //}
 
-            ICellStyle footerCellstyle = excel.GetWorkBook().CreateCellStyle();
-            footerCellstyle.FillForegroundColor = HSSFColor.Red.Index;
-            footerCellstyle.FillPattern = FillPattern.SolidForeground;
-            excel.SetStyle(footerCellstyle, rowIndex: 5);
+            //NpoiExcelHelper excel = new NpoiExcelHelper();
 
-            excel.Export(string.Format("{0}Test_setStyle.xls", ResultFile));
+            //excel.Write(data, 0, 0, 0);
+
+            //ICellStyle footerCellstyle = excel.GetWorkBook().CreateCellStyle();
+            //footerCellstyle.FillForegroundColor = HSSFColor.Red.Index;
+            //footerCellstyle.FillPattern = FillPattern.SolidForeground;
+            //excel.SetStyle(footerCellstyle, rowIndex: 5);
+
+            //excel.Export(string.Format("{0}Test_setStyle.xls", ResultFile));
 
         }
 
         [TestMethod]
         public void Test_MultiTheadWriteList()
         {
+            Assert.Fail("未进行测试");
+
             //Parallel.For(0, 1000, (i) =>
             //{
             //    var data = new List<Product>();
@@ -263,31 +252,18 @@ namespace JIF.Common.Excel.Test
         }
 
 
-
-
-        #region IExcel & NExcel Test 
-
         [TestMethod]
-        public void Test_GetExcelColHeadChar()
+        public void 读取_返回List_Dynamic()
         {
-            var a = Utils.ToNumberSystem26(0);
-            var b = Utils.ToNumberSystem26(10);
-            var c = Utils.ToNumberSystem26(30);
-            var d = Utils.ToNumberSystem26(1000);
-        }
-
-
-        [TestMethod]
-        public void Test_NExcel_ReadExcel()
-        {
-            var file = @"E:\WorkDocument\Document\2016-05-13 夏季活动\GCM Summer Sale_hotellist_Zeropartner.xlsx";
-            var data = ExcelHelper.Read(file, rowIndex: 1);
+            var file = @"F:\WorkDocument\Code.zen\Code.Zen.Test\assert\GCM Summer Sale_hotellist_Zeropartner.xlsx";
+            var data = NpoiExcelHelper.Read(file, 0, 0, 0);
 
             var a = data.Select(d => new
             {
                 hotelcode = d.C,
                 hot = string.IsNullOrWhiteSpace(d.H) ? 0 : d.H,
-                hotelbookingurl = d.Z
+                hotelbookingurl = d.Z,
+
             });
 
             var rs = JsonConvert.SerializeObject(a);
@@ -295,6 +271,5 @@ namespace JIF.Common.Excel.Test
             Console.WriteLine(rs);
         }
 
-        #endregion
     }
 }
