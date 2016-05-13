@@ -84,7 +84,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Code.Zen\JIF.Common.csproj">
+    <ProjectReference Include="..\JIF.Common\JIF.Common.csproj">
       <Project>{bb49d08c-1715-4876-aaf6-25380f68432c}</Project>
       <Name>JIF.Common</Name>
     </ProjectReference>
