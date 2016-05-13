@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using System.IO;
-using System.Dynamic;
 using NPOI.XSSF.UserModel;
-using NPOI.HSSF.UserModel;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.IO;
+using System.Linq;
 
 namespace JIF.Common.Excel
 {
@@ -37,14 +35,14 @@ namespace JIF.Common.Excel
             return _workbook.GetSheetAt(sheetIndex);
         }
 
-        IRow Row(int rowIndex, int sheetIndex)
+        IRow Row(int sheetIndex, int rowIndex)
         {
             return Sheet(sheetIndex).GetRow(rowIndex);
         }
 
-        ICell Cell(int cellIndex, int rowIndex, int sheetIndex)
+        ICell Cell(int sheetIndex, int rowIndex, int cellIndex)
         {
-            return Row(sheetIndex: sheetIndex, rowIndex: rowIndex).GetCell(cellIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+            return Row(sheetIndex, rowIndex).GetCell(cellIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK);
         }
 
         #endregion
@@ -61,10 +59,10 @@ namespace JIF.Common.Excel
 
         public void Write<T>(T source, int sheetIndex, int rowIndex, int cellIndex)
         {
-            if (Row(rowIndex, sheetIndex) == null)
-                CreateRow(sheetIndex: sheetIndex, rowIndex: rowIndex);
+            if (Row(sheetIndex, rowIndex) == null)
+                CreateRow(sheetIndex, rowIndex);
 
-            var currentCell = Cell(cellIndex, rowIndex, sheetIndex);
+            var currentCell = Cell(sheetIndex, rowIndex, cellIndex);
 
             if (source != null)
             {
@@ -121,6 +119,15 @@ namespace JIF.Common.Excel
             }
         }
 
+        /// <summary>
+        /// 注意 :
+        /// 使用 使用此方法,写入用户自定义实体类型时,会自动根据类型属性名称字母排序数据列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="sheetIndex"></param>
+        /// <param name="rowIndex"></param>
+        /// <param name="cellIndex"></param>
         public void Write<T>(List<T> source, int sheetIndex, int rowIndex, int cellIndex)
         {
             if (source == null || source.Count() == 0)
@@ -155,6 +162,7 @@ namespace JIF.Common.Excel
                 int col = 0;
                 foreach (var initem in source[i])
                 {
+
                     Write(initem.Value, sheetIndex, rowIndex + i, cellIndex + col);
                     col++;
                 }
@@ -173,7 +181,7 @@ namespace JIF.Common.Excel
             _workbook = null;
         }
 
-        public static List<dynamic> Read(string file, int sheetIndex, int rowIndex, int cellIndex)
+        public static List<dynamic> Read(string file, int sheetIndex = 0, int rowIndex = 0, int cellIndex = 0)
         {
             IWorkbook workbook = null;
 
@@ -205,11 +213,11 @@ namespace JIF.Common.Excel
                     ICell cel = row.GetCell(c);
                     if (cel == null)
                     {
-                        DicdyData[Utils.ToNumberSystem26(c)] = null;
+                        DicdyData[Utils.ToNumberSystem26(c + 1)] = null;
                     }
                     else
                     {
-                        DicdyData[Utils.ToNumberSystem26(c)] = cel.ToString();
+                        DicdyData[Utils.ToNumberSystem26(c + 1)] = cel.ToString();
                     }
                 }
 
