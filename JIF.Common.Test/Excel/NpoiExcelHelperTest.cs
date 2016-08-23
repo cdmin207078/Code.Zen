@@ -295,5 +295,89 @@ namespace JIF.Common.Excel.Test
             Console.WriteLine(rs);
         }
 
+        [TestMethod]
+        public void BookLink_Mod()
+        {
+            var file = @"E:\WorkDocument\Document\2016-06-01 booklink 修改\6月1日需更新酒店信息表格-0523.xlsx";
+            var data = NpoiExcelHelper.Read(file, rowIndex: 1).Select(d => new
+            {
+                HotelCode = d.D,
+                BookLink = d.AB
+            });
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in data)
+            {
+                sb.AppendFormat("UNION SELECT '{0}','{1}'" + "\r\n", item.HotelCode, item.BookLink);
+            }
+
+
+            Console.WriteLine(sb.ToString());
+
+            //Console.WriteLine(JsonConvert.SerializeObject(data));
+        }
+
+        [TestMethod]
+        public void RFP_Hotel()
+        {
+            var file = @"E:\WorkDocument\Document\2016-06-03 希尔顿婚宴网站改版\RFP Email List - GCM Hotels New.xls";
+            var data = NpoiExcelHelper.Read(file, rowIndex: 6).Select(d => new
+            {
+                HotelCode = d.D,
+                Email = d.G
+            });
+
+            Console.WriteLine(JsonConvert.SerializeObject(data.Where(d => !string.IsNullOrWhiteSpace(d.Email)).OrderBy(d => d.Email)));
+        }
+
+        [TestMethod]
+        public void Test_JSONConvert_Desc_Dynamic()
+        {
+            //string json = @"{ ""Name"":""陈宁"",""SEXx"":""男"" }";
+
+            //var data = JsonConvert.DeserializeAnonymousType(json, new { Name = "", Sex = "", Age = 0 });
+
+            //dynamic obj = new ExpandoObject();
+
+            //obj.Name = "千里之外";
+            //obj.Author = "JAY";
+            //obj.Album = "2007世界巡回演唱会";
+            //obj.FavoiCount = 167;
+
+            //Console.WriteLine(JsonConvert.SerializeObject(obj));
+
+            var json = @"[{ ""HotelCode"": ""SYXCICI"", ""Email"": ""Olina.Chen@hilton.com"" }, { ""HotelCode"": ""SYXDTDI"", ""Email"": ""Olina.Chen@hilton.com"" }, { ""HotelCode"": ""JHGXIDI"", ""Email"": ""airy.zhou@hilton.com"" }, { ""HotelCode"": ""BJSHITW"", ""Email"": ""Andrew.Moore@hilton.com"" }, { ""HotelCode"": ""HGHJIDI"", ""Email"": ""Andy.Gao@hilton.com"" }, { ""HotelCode"": ""SYXHIHI"", ""Email"": ""anna.cao@hilton.com"" }, { ""HotelCode"": ""XMNCICI"", ""Email"": ""anson.zengfl@conradhotels.com"" }, { ""HotelCode"": ""WUXTJDI"", ""Email"": ""audrey.zhang2@hilton.com"" }, { ""HotelCode"": ""CKGJBDI"", ""Email"": ""Barbara.Yu@hilton.com"" }, { ""HotelCode"": ""CSXZHHI"", ""Email"": ""Byrds.Yang@hilton.com"" }, { ""HotelCode"": ""HUZHADI"", ""Email"": ""Candy.Meng@hilton.com"" }, { ""HotelCode"": ""MFMCSCI"", ""Email"": ""carolina.cheung@sands.com.mo"" }, { ""HotelCode"": ""CZXWDHI"", ""Email"": ""chris.qian@hilton.com"" }, { ""HotelCode"": ""BJSWFHI"", ""Email"": ""Christina.Yang@hilton.com"" }, { ""HotelCode"": ""FOCLDDI"", ""Email"": ""Chuck.Fu@hilton.com"" }, { ""HotelCode"": ""TAOLXDI"", ""Email"": ""Coco.Zhu@hilton.com"" }, { ""HotelCode"": ""WUHRSHI"", ""Email"": ""Connie.Chao@hilton.com"" }, { ""HotelCode"": ""CANSCDI"", ""Email"": ""Demi.Li@hilton.com"" }, { ""HotelCode"": ""XMNWBDI"", ""Email"": ""denny.li@hilton.com"" }, { ""HotelCode"": ""HAKHCDI"", ""Email"": ""duke.du@hilton.com"" }, { ""HotelCode"": ""SYXHQDI"", ""Email"": ""eggie.lee@hilton.com"" }, { ""HotelCode"": ""DLUGTHI"", ""Email"": ""Elaine.Mo@hilton.com"" }, { ""HotelCode"": ""HKGHCCI"", ""Email"": ""Enoch.chiu@conradhotels.com"" }, { ""HotelCode"": ""SHAWAWA"", ""Email"": ""estella.xu@waldorfastoria.com"" }, { ""HotelCode"": ""SHAHITW"", ""Email"": ""Eva.fan@hilton.com"" }, { ""HotelCode"": ""DDGZDGI"", ""Email"": ""Eva.liang@hilton.com"" }, { ""HotelCode"": ""CANSRDI"", ""Email"": ""Frankie.liu@hilton.com"" }, { ""HotelCode"": ""CTUCCHI"", ""Email"": ""freda.liu@hilton.com"" }, { ""HotelCode"": ""SHASPDI"", ""Email"": ""Gavin.Dai@hilton.com"" }, { ""HotelCode"": ""HAKWEHI"", ""Email"": ""Gavin.hu@hilton.com"" }, { ""HotelCode"": ""NKGWUDI"", ""Email"": ""Grace.Zhu@hilton.com"" }, { ""HotelCode"": ""BJSCICI"", ""Email"": ""Haidy.Cheng@conradhotels.com"" }, { ""HotelCode"": ""HAKMEHI"", ""Email"": ""HAKME_CB@Hilton.com "" }, { ""HotelCode"": ""NGBNCDI"", ""Email"": ""Helen.He@hilton.com"" }, { ""HotelCode"": ""URCHHHI"", ""Email"": ""Jacky.He@hilton.com"" }, { ""HotelCode"": ""CANGUHI"", ""Email"": ""janica.shao@hilton.com"" }, { ""HotelCode"": ""SHASHHI"", ""Email"": ""Jenny.Qiu@hilton.com "" }, { ""HotelCode"": ""NKGJFHI"", ""Email"": ""Jenny.Xu@hilton.com"" }, { ""HotelCode"": ""SZXSBGI"", ""Email"": ""Karen.zhong@hilton.com"" }, { ""HotelCode"": ""HGHHEDI"", ""Email"": ""Kenny.Zhang@hilton.com"" }, { ""HotelCode"": ""SZVTVDI"", ""Email"": ""Lance.yan@hilton.com"" }, { ""HotelCode"": ""TAOGBHI"", ""Email"": ""Lily.Wang@hilton.com"" }, { ""HotelCode"": ""SZXSFHI"", ""Email"": ""lina.wang4@hilton.com"" }, { ""HotelCode"": ""HGHLRHI"", ""Email"": ""lion.mao@hilton.com"" }, { ""HotelCode"": ""LJGGIGI"", ""Email"": ""Lora.Luo@hilton.com"" }, { ""HotelCode"": ""CKGCWDI"", ""Email"": ""Lynn.Lingjuan@hilton.com"" }, { ""HotelCode"": ""TNAJHHI"", ""Email"": ""Maria.ma@hilton.com"" }, { ""HotelCode"": ""BJSWAWA"", ""Email"": ""Mark.Xu@waldorfastoria.com"" }, { ""HotelCode"": ""XIYHIHI"", ""Email"": ""Nancy.Wul@hilton.com"" }, { ""HotelCode"": ""HSNZHHI"", ""Email"": ""Nick.Zhao@hilton.com"" }, { ""HotelCode"": ""CGOZHHI"", ""Email"": ""Nicole.duan@hilton.com"" }, { ""HotelCode"": ""TSNECHI"", ""Email"": ""Pauline.Chu@hilton.com"" }, { ""HotelCode"": ""FUOCDHI"", ""Email"": ""Rachel.Zhu@hilton.com"" }, { ""HotelCode"": ""BJSDTDI"", ""Email"": ""Ray.Dailei@hilton.com"" }, { ""HotelCode"": ""GOQQG"", ""Email"": ""Rose.Fan@hilton.com"" }, { ""HotelCode"": ""NKGNRHI"", ""Email"": ""Sales.coordinator@hilton.com"" }, { ""HotelCode"": ""NKGYFHI"", ""Email"": ""salesc@hiltonfuxianlake.com"" }, { ""HotelCode"": ""SHEDTDI"", ""Email"": ""Seven.peng@hilton.com"" }, { ""HotelCode"": ""CANGTHI"", ""Email"": ""sita.chen@hilton.com"" }, { ""HotelCode"": ""WUHOVHI"", ""Email"": ""Stacy.Wang@hilton.com"" }, { ""HotelCode"": ""WUXXDDI"", ""Email"": ""sunshine.feng@hilton.com"" }, { ""HotelCode"": ""SJWZSHI"", ""Email"": ""Susan.Gao@hilton.com"" }, { ""HotelCode"": ""SZXSSHI"", ""Email"": ""Susie.cai@hilton.com"" }, { ""HotelCode"": ""BJSCAHI"", ""Email"": ""Susie.Sun2@hilton.com"" }, { ""HotelCode"": ""ZGNZDHI"", ""Email"": ""tiffany.mai@hilton.com"" }, { ""HotelCode"": ""HFEHIHI"", ""Email"": ""todd.fan@hilton.com"" }, { ""HotelCode"": ""HAKHAHI"", ""Email"": ""Vince.Cao@hilton.com"" }, { ""HotelCode"": ""AVAHSDT"", ""Email"": ""Vincent.Feng@hilton.com"" }, { ""HotelCode"": ""CKGHIHI"", ""Email"": ""Wendy.Lv@hilton.com"" }, { ""HotelCode"": ""TNAJCHI"", ""Email"": ""will.nie@hilton.com"" }, { ""HotelCode"": ""YNTDIDI"", ""Email"": ""Yongwei.wang@hilton.com"" }]";
+
+
+            var a = JsonConvert.DeserializeObject<List<C1>>(json);
+
+            var b = NpoiExcelHelper.Read(@"E:\WorkDocument\Document\2016-06-14 希尔顿婚宴网站- 酒店增加email\RFP Email List - GCM Hotels New 20160613.xls", rowIndex: 6).Select(d => new C1
+            {
+                HotelCode = d.D,
+                Email = d.H
+            });
+
+            foreach (var item in a)
+            {
+
+                var c = b.FirstOrDefault(d => d.HotelCode.Trim() == item.HotelCode.Trim() && !string.IsNullOrWhiteSpace(d.Email));
+
+                if (c == null) continue;
+
+                item.Email += ";" + b.FirstOrDefault(d => d.HotelCode.Trim() == item.HotelCode.Trim()).Email;
+            }
+
+            Console.WriteLine(JsonConvert.SerializeObject(a));
+
+        }
+
+
+        public class C1
+        {
+            public string HotelCode { get; set; }
+
+            public string Email { get; set; }
+        }
+
     }
 }
