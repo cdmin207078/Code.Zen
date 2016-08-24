@@ -70,13 +70,16 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Excel\Product.cs" />
-    <Compile Include="Excel\NpoiExcelHelperTest.cs" />
+    <Compile Include="Entites\Product.cs" />
+    <Compile Include="NpoiExcelHelperTest.cs" />
+    <Compile Include="ImageHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +91,9 @@
       <Project>{bb49d08c-1715-4876-aaf6-25380f68432c}</Project>
       <Name>JIF.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assert\1.jpg" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

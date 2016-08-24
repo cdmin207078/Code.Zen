@@ -1,4 +1,4 @@
-using JIF.Common.Test.Excel;
+using JIF.Common.Test.Entites;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using NPOI.HSSF.Util;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JIF.Common.Excel.Test
+namespace JIF.Common.Test
 {
     [TestClass]
     public class NpoiExcelHelperTest

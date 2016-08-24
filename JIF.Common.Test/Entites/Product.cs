@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JIF.Common.Test.Excel
+namespace JIF.Common.Test.Entites
 {
     public class Product
     {
