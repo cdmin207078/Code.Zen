@@ -81,6 +81,7 @@
     <Compile Include="NpoiExcelHelperTest.cs" />
     <Compile Include="ImageHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assert\GCM Summer Sale_hotellist_Zeropartner.xlsx" />

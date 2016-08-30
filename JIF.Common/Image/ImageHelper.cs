@@ -144,7 +144,7 @@
                     try
                     {
                         //以jpg格式保存缩略图
-                        bitmap.Save(thumbnailPath, System.Drawing.Imaging.ImageFormat.Png);
+                        bitmap.Save(thumbnailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
                     finally
                     {
@@ -159,7 +159,6 @@
 
             }
         }
-
 
     }
 }
