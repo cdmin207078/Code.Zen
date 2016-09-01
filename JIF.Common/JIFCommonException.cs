@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace JIF.Common
 {
     [Serializable]
-    public class JIFCommonException : Exception
+    internal class JIFCommonException : Exception
     {
         public JIFCommonException()
             : base()

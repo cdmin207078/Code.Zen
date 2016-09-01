@@ -173,14 +173,15 @@ namespace JIF.Common
         /// <param name="imgWidth">图片宽度</param>
         /// <param name="imgHeight">图片高度</param>
         /// <returns></returns>
-        public static Stream GenerateValidateCode(string vcode, int imgWidth, int imgHeight)
+        public static Stream GenValidateCode(string vcode, int width = 120, int height = 40)
         {
-            if (string.IsNullOrWhiteSpace(vcode) || imgWidth < 1 || imgHeight < 1)
+            if (string.IsNullOrWhiteSpace(vcode) || width < 1 || height < 1)
             {
                 throw new ArgumentException("ImageHelper : GenerateValidateCode param err.");
             }
 
-            Color[] oColors ={
+            // 可选颜色
+            Color[] oColors = {
              Color.Black,
              Color.Red,
              Color.Blue,
@@ -191,17 +192,59 @@ namespace JIF.Common
              Color.DarkBlue
             };
 
-            //字體列表，用於驗證碼
+            // 可选字体
             string[] oFontNames = { "Times New Roman", "MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
 
-            Bitmap bmp = new Bitmap(imgWidth, imgHeight);
+            // 字符栅格大小, 用于控制每个字符书写位置
+            var lattice = width / vcode.Length;
+
+            Bitmap bmp = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(bmp);
+            g.Clear(Color.White);
 
 
-            var font = new Font("Times New Roman", 17, FontStyle.Italic);
+            for (int i = 0; i < vcode.Length; i++)
+            {
+                var s = vcode[i].ToString();
 
-            g.DrawString(vcode, font, new SolidBrush(Color.Red), 0, 0);
+                //文字距中
+                var format = new StringFormat(StringFormatFlags.NoClip);
+                format.Alignment = StringAlignment.Center;
+                format.LineAlignment = StringAlignment.Center;
 
+                var font = new Font(
+                    oFontNames[new Random(Guid.NewGuid().GetHashCode()).Next(0, oFontNames.Length - 1)],
+                    new Random(Guid.NewGuid().GetHashCode()).Next(14, 24),
+                    FontStyle.Bold);
+
+                var brush = new SolidBrush(RandomHelper.GenColor());
+
+                //var x = i * lattice + RandomHelper.Gen(0, 5);
+                //var y = (height - font.Height) / 2 + RandomHelper.Gen(-5, 5);
+
+                //var x = 14;
+                //var y = 14;
+
+                //Point dot = new Point(x, y);
+
+
+                // 字符旋转角度
+                //var angel = RandomHelper.Gen(-45, 45);
+
+                //g.TranslateTransform(dot.X, dot.Y);
+                //g.RotateTransform(angel);
+
+                var x = i * lattice + RandomHelper.Gen(0, 5);
+                var y = (height - font.Height) / 2 + RandomHelper.Gen(-5, 5);
+                g.DrawString(s, font, brush, x, y);
+                //g.DrawString(s, font, brush, 1, 1, format);
+
+                //g.ResetTransform();
+                //g.RotateTransform(-angel);
+
+                //g.TranslateTransform(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
+
+            }
 
             //保存图片数据
             MemoryStream stream = new MemoryStream();

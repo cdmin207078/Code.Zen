@@ -24,14 +24,14 @@ namespace JIF.Common.Test
         {
             for (int i = 0; i < 100; i++)
             {
-                Console.WriteLine(string.Format("重复个数: {0}", 10000 - RandomHelper.Generate(RandomHelper.Format.NumChar, 4, 10000).Distinct().Count()));
+                Console.WriteLine(string.Format("重复个数: {0}", 10000 - RandomHelper.Gen(RandomHelper.Format.NumChar, 4, 10000).Distinct().Count()));
             }
         }
 
         [TestMethod]
         public void Test_Generate_NumChar()
         {
-            var data = RandomHelper.Generate(RandomHelper.Format.NumCharL, 4, 10000);
+            var data = RandomHelper.Gen(RandomHelper.Format.NumCharL, 4, 10000);
 
             foreach (var d in data)
             {

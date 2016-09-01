@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JIF.Common
 {
-    public static class Utils
+    internal static class Utils
     {
         #region 进制转换
 

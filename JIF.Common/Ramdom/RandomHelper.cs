@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -175,6 +176,39 @@ namespace JIF.Common
             }
         }
 
+
+        /// <summary>
+        /// 随机生成颜色
+        /// </summary>
+        /// <param name="alpha">颜色 alpha, 默认(最大） 255. 不透明</param>
+        /// <returns></returns>
+        public static Color GenColor(int alpha = 255)
+        {
+            if (alpha > 255 || alpha < 1)
+            {
+                throw new ArgumentException();
+            }
+
+            var rnd = new Random(Guid.NewGuid().GetHashCode());
+
+            var r = rnd.Next(0, 255);
+            var g = rnd.Next(0, 255);
+            var b = rnd.Next(0, 255);
+
+            return Color.FromArgb(alpha, r, g, b);
+        }
+
+        /// <summary>
+        /// 生成指定范围内的一个随机整数
+        /// </summary>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <returns></returns>
+        public static int Gen(int min, int max)
+        {
+            return new Random(Guid.NewGuid().GetHashCode()).Next(min, max);
+        }
+
         /// <summary>
         /// 生成随机字符串列表
         /// </summary>
@@ -182,7 +216,7 @@ namespace JIF.Common
         /// <param name="len">生成字符串长度</param>
         /// <param name="count">生成个数</param>
         /// <returns></returns>
-        public static List<string> Generate(Format format, int len, int count)
+        public static List<string> Gen(Format format, int len, int count)
         {
             var source = getSource(format);
 
@@ -210,7 +244,7 @@ namespace JIF.Common
         /// </summary>
         /// <param name="count">生成个数</param>
         /// <returns></returns>
-        public static List<string> GenerateChineseName(int count)
+        public static List<string> GenChineseName(int count)
         {
             return null;
         }

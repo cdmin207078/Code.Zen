@@ -174,12 +174,14 @@ namespace JIF.Common.Test
         public void Test_Generate_VerifyCodeImg()
         {
             var f = @"C:\Users\Administrator\Desktop\gen-verifycode\";
-            var verifycodes = RandomHelper.Generate(RandomHelper.Format.NumCharL, 10, 10000);
+            var verifycodes = RandomHelper.Gen(RandomHelper.Format.Chinese, 4, 100);
 
             foreach (var code in verifycodes)
             {
-                var imgBuffer = ImageHelper.GenerateValidateCode(code, 300, 100);
-                Bitmap.FromStream(imgBuffer).Save(string.Format("{0}{1}.png", f, code));
+                using (var imgBuffer = ImageHelper.GenValidateCode(code, 120, 40))
+                {
+                    Bitmap.FromStream(imgBuffer).Save(string.Format("{0}{1}.jpg", f, code));
+                }
             }
         }
     }
