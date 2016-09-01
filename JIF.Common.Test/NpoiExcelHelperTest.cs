@@ -320,14 +320,14 @@ namespace JIF.Common.Test
         [TestMethod]
         public void RFP_Hotel()
         {
-            var file = @"E:\WorkDocument\Document\2016-06-03 希尔顿婚宴网站改版\RFP Email List - GCM Hotels New.xls";
+            var file = @"E:\WorkDocument\Document\2016-08-31 hilton weddingconsult re\RFP Email List - GCM Hotels New 20160829需要放的酒店.xls";
             var data = NpoiExcelHelper.Read(file, rowIndex: 6).Select(d => new
             {
                 HotelCode = d.D,
-                Email = d.G
+                Email = string.Intern(d.G) + ";" + d.H
             });
 
-            Console.WriteLine(JsonConvert.SerializeObject(data.Where(d => !string.IsNullOrWhiteSpace(d.Email)).OrderBy(d => d.Email)));
+            Console.WriteLine(JsonConvert.SerializeObject(data.Where(d => !string.IsNullOrWhiteSpace(d.Email))));
         }
 
         [TestMethod]

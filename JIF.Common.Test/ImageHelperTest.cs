@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
+using System.Drawing;
 
 namespace JIF.Common.Test
 {
@@ -166,6 +167,20 @@ namespace JIF.Common.Test
             Console.WriteLine("GetFileNameWithoutExtension : " + Path.GetFileNameWithoutExtension(path));
             Console.WriteLine("GetDirectoryName : " + Path.GetDirectoryName(path));
             Console.WriteLine("GetExtension : " + Path.GetExtension(path));
+        }
+
+
+        [TestMethod]
+        public void Test_Generate_VerifyCodeImg()
+        {
+            var f = @"C:\Users\Administrator\Desktop\gen-verifycode\";
+            var verifycodes = RandomHelper.Generate(RandomHelper.Format.NumCharL, 10, 10000);
+
+            foreach (var code in verifycodes)
+            {
+                var imgBuffer = ImageHelper.GenerateValidateCode(code, 300, 100);
+                Bitmap.FromStream(imgBuffer).Save(string.Format("{0}{1}.png", f, code));
+            }
         }
     }
 }

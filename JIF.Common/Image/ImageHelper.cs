@@ -1,4 +1,9 @@
-﻿namespace JIF.Common
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+
+namespace JIF.Common
 {
     public static class ImageHelper
     {
@@ -158,6 +163,52 @@
             {
 
             }
+        }
+
+
+        /// <summary>
+        /// 生成验证码图片
+        /// </summary>
+        /// <param name="vcode">验证码文字</param>
+        /// <param name="imgWidth">图片宽度</param>
+        /// <param name="imgHeight">图片高度</param>
+        /// <returns></returns>
+        public static Stream GenerateValidateCode(string vcode, int imgWidth, int imgHeight)
+        {
+            if (string.IsNullOrWhiteSpace(vcode) || imgWidth < 1 || imgHeight < 1)
+            {
+                throw new ArgumentException("ImageHelper : GenerateValidateCode param err.");
+            }
+
+            Color[] oColors ={
+             Color.Black,
+             Color.Red,
+             Color.Blue,
+             Color.Green,
+             Color.Orange,
+             Color.Brown,
+             Color.Brown,
+             Color.DarkBlue
+            };
+
+            //字體列表，用於驗證碼
+            string[] oFontNames = { "Times New Roman", "MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
+
+            Bitmap bmp = new Bitmap(imgWidth, imgHeight);
+            Graphics g = Graphics.FromImage(bmp);
+
+
+            var font = new Font("Times New Roman", 17, FontStyle.Italic);
+
+            g.DrawString(vcode, font, new SolidBrush(Color.Red), 0, 0);
+
+
+            //保存图片数据
+            MemoryStream stream = new MemoryStream();
+            bmp.Save(stream, ImageFormat.Png);
+
+            //输出图片流
+            return stream;
         }
 
     }
