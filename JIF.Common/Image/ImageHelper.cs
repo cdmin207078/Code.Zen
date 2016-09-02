@@ -173,85 +173,103 @@ namespace JIF.Common
         /// <param name="imgWidth">图片宽度</param>
         /// <param name="imgHeight">图片高度</param>
         /// <returns></returns>
-        public static Stream GenValidateCode(string vcode, int width = 120, int height = 40)
+        public static byte[] GenValidateCode(string vcode, int width = 120, int height = 40)
         {
             if (string.IsNullOrWhiteSpace(vcode) || width < 1 || height < 1)
             {
                 throw new ArgumentException("ImageHelper : GenerateValidateCode param err.");
             }
 
-            // 可选颜色
-            Color[] oColors = {
-             Color.Black,
-             Color.Red,
-             Color.Blue,
-             Color.Green,
-             Color.Orange,
-             Color.Brown,
-             Color.Brown,
-             Color.DarkBlue
-            };
-
             // 可选字体
-            string[] oFontNames = { "Times New Roman", "MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
+            string[] oFontNames = { "华文彩云", "方正舒体", "华文琥珀", "华文行楷", "Calibri (西文正文)", "Arial Black" };
 
             // 字符栅格大小, 用于控制每个字符书写位置
             var lattice = width / vcode.Length;
 
             Bitmap bmp = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(bmp);
-            g.Clear(Color.White);
 
-
-            for (int i = 0; i < vcode.Length; i++)
+            try
             {
-                var s = vcode[i].ToString();
 
-                //文字距中
-                var format = new StringFormat(StringFormatFlags.NoClip);
-                format.Alignment = StringAlignment.Center;
-                format.LineAlignment = StringAlignment.Center;
+                g.Clear(Color.White);
 
-                var font = new Font(
-                    oFontNames[new Random(Guid.NewGuid().GetHashCode()).Next(0, oFontNames.Length - 1)],
-                    new Random(Guid.NewGuid().GetHashCode()).Next(14, 24),
-                    FontStyle.Bold);
+                //背景噪点生成
+                for (int i = 0; i < 100; i++)
+                {
+                    Pen blackPen = new Pen(RandomHelper.GenColor(100), 0);
+                    int x1 = RandomHelper.Gen(0, width);
+                    int y1 = RandomHelper.Gen(0, height);
+                    g.DrawRectangle(blackPen, x1, y1, 1, 1);
+                }
 
-                var brush = new SolidBrush(RandomHelper.GenColor());
+                // 背景干扰线
+                for (int i = 0; i < 10; i++)
+                {
+                    Pen pen = new Pen(RandomHelper.GenColor(100), RandomHelper.Gen(0, 5));
+                    var p1 = new Point(RandomHelper.Gen(0, width), RandomHelper.Gen(0, height));
+                    var p2 = new Point(RandomHelper.Gen(0, width), RandomHelper.Gen(0, height));
 
-                //var x = i * lattice + RandomHelper.Gen(0, 5);
-                //var y = (height - font.Height) / 2 + RandomHelper.Gen(-5, 5);
-
-                //var x = 14;
-                //var y = 14;
-
-                //Point dot = new Point(x, y);
+                    g.DrawLine(pen, p1, p2);
+                }
 
 
-                // 字符旋转角度
-                //var angel = RandomHelper.Gen(-45, 45);
+                for (int i = 0; i < vcode.Length; i++)
+                {
+                    var s = vcode[i].ToString();
 
-                //g.TranslateTransform(dot.X, dot.Y);
-                //g.RotateTransform(angel);
+                    //文字距中
+                    var format = new StringFormat(StringFormatFlags.NoClip);
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Center;
 
-                var x = i * lattice + RandomHelper.Gen(0, 5);
-                var y = (height - font.Height) / 2 + RandomHelper.Gen(-5, 5);
-                g.DrawString(s, font, brush, x, y);
-                //g.DrawString(s, font, brush, 1, 1, format);
+                    var font = new Font(
+                        oFontNames[RandomHelper.Gen(0, oFontNames.Length - 1)],
+                        RandomHelper.Gen(18, 36),
+                        FontStyle.Bold);
 
-                //g.ResetTransform();
-                //g.RotateTransform(-angel);
+                    var brush = new SolidBrush(RandomHelper.GenColor());
 
-                //g.TranslateTransform(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
+                    //var x = i * lattice + RandomHelper.Gen(0, 5);
+                    //var y = (height - font.Height) / 2 + RandomHelper.Gen(-5, 5);
 
+                    //var x = 14;
+                    //var y = 14;
+
+                    //Point dot = new Point(x, y);
+
+
+                    // 字符旋转角度
+                    //var angel = RandomHelper.Gen(-45, 45);
+
+                    //g.TranslateTransform(dot.X, dot.Y);
+                    //g.RotateTransform(angel);
+
+                    var x = i * lattice + RandomHelper.Gen(0, 5);
+                    var y = (height - font.Height) / 2 + RandomHelper.Gen(-5, 5);
+                    g.DrawString(s, font, brush, x, y);
+                    //g.DrawString(s, font, brush, 1, 1, format);
+
+                    //g.ResetTransform();
+                    //g.RotateTransform(-angel);
+
+                    //g.TranslateTransform(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
+
+                }
+
+                //保存图片数据
+                using (var stream = new MemoryStream())
+                {
+                    bmp.Save(stream, ImageFormat.Png);
+                    return stream.ToArray();
+                }
+            }
+            finally
+            {
+                g.Dispose();
+                bmp.Dispose();
             }
 
-            //保存图片数据
-            MemoryStream stream = new MemoryStream();
-            bmp.Save(stream, ImageFormat.Png);
-
-            //输出图片流
-            return stream;
         }
 
     }

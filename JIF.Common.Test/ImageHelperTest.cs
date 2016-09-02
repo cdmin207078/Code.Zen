@@ -174,7 +174,7 @@ namespace JIF.Common.Test
         public void Test_Generate_VerifyCodeImg()
         {
             var f = @"C:\Users\Administrator\Desktop\gen-verifycode\";
-            var verifycodes = RandomHelper.Gen(RandomHelper.Format.Chinese, 4, 100);
+            var verifycodes = RandomHelper.Gen(RandomHelper.Format.NumChar, 4, 100);
 
             foreach (var code in verifycodes)
             {
